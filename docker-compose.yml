@@ -18,10 +18,10 @@ services:
 # Make sure to turn off any VPNs for the proxy to work.
   cloudsqlproxy:
     container_name: cloudsql-proxy
-    image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
+    image: gcr.io/cloudsql-docker/gce-proxy:latest
     volumes:
       - ./creds.json:/secrets/cloudsql/creds.json
     ports:
       - 127.0.0.1:5432:5432
-    command: /cloud_sql_proxy -instances="django-cloudrun-project:us-central1:django-dev-db"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
+    command: /cloud_sql_proxy -instances="django-373916:us-central1:django-dev-db"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
     restart: always
