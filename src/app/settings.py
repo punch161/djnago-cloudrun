@@ -33,7 +33,7 @@ elif os.getenv("GOOGLE_CLOUD_PROJECT", None):
 
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.getenv("SETTINGS_NAME", "django_app_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+    name = f"projects/{project_id}/secrets/{settings_name}/versions/1"
     payload = client.access_secret_version(name=name).payload.data.decode(
         "UTF-8"
     )
