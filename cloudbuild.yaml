@@ -8,9 +8,7 @@ steps:
       - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
       - .
       - '-f'
-      - Dockerfile
-  options:
-    logging: CLOUD_LOGGING_ONLY        
+      - Dockerfile       
     id: Build  
 
   # 1. Docker push to Google Artifact Registry
@@ -18,8 +16,6 @@ steps:
     args:
       - push
       - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA' 
-  options:
-    logging: CLOUD_LOGGING_ONLY
     id: Push 
 
   # 2. Make migrations
@@ -34,7 +30,7 @@ steps:
       - '--'
       - 'python'
       - 'manage.py'
-      - 'makemigrations'  
+      - 'makemigrations'
     id: Make migrations
 
   # 3. Migrate
@@ -67,7 +63,7 @@ steps:
       - 'collectstatic'
       - '--no-input'  
     id: Collect static
-
+  
   # 5. Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
@@ -82,6 +78,8 @@ steps:
       - '--region=$_DEPLOY_REGION'
       - '--quiet'   
     id: Deploy
+  options:
+    logging: CLOUD_LOGGING_ONLY  
     entrypoint: gcloud
 
 # Store images in Google Artifact Registry
