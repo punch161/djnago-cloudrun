@@ -35,6 +35,8 @@ steps:
       - 'python'
       - 'manage.py'
       - 'makemigrations'
+  options:
+    logging: CLOUD_LOGGING_ONLY    
     id: Make migrations
 
   # 3. Migrate
@@ -50,6 +52,8 @@ steps:
       - 'python'
       - 'manage.py'
       - 'migrate'
+  options:
+    logging: CLOUD_LOGGING_ONLY    
     id: Migrate
 
     # 4. Collect static
@@ -66,6 +70,8 @@ steps:
       - 'manage.py'
       - 'collectstatic'
       - '--no-input'
+  options:
+    logging: CLOUD_LOGGING_ONLY    
     id: Collect static
 
   # 5. Deploy to Cloud Run
@@ -81,6 +87,8 @@ steps:
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
       - '--region=$_DEPLOY_REGION'
       - '--quiet'
+  options:
+    logging: CLOUD_LOGGING_ONLY    
     id: Deploy
     entrypoint: gcloud
 
