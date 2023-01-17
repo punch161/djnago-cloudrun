@@ -9,7 +9,7 @@ steps:
       - .
       - '-f'
       - Dockerfile       
-    id: Build  
+    id: Build    
 
   # 1. Docker push to Google Artifact Registry
   - name: gcr.io/cloud-builders/docker
@@ -77,9 +77,7 @@ steps:
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
       - '--region=$_DEPLOY_REGION'
       - '--quiet'   
-    id: Deploy
-  options:
-    logging: CLOUD_LOGGING_ONLY  
+    id: Deploy 
     entrypoint: gcloud
 
 # Store images in Google Artifact Registry
@@ -89,3 +87,5 @@ images:
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
+options:
+  logging: CLOUD_LOGGING_ONLY   
