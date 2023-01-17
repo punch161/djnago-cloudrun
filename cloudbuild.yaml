@@ -8,18 +8,14 @@ steps:
       - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
       - .
       - '-f'
-      - Dockerfile
-  options:
-    logging: CLOUD_LOGGING_ONLY    
+      - Dockerfile    
     id: Build  
 
   # 1. Docker push to Google Artifact Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
-  options:
-    logging: CLOUD_LOGGING_ONLY  
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA' 
     id: Push 
 
   # 2. Make migrations
@@ -34,9 +30,7 @@ steps:
       - '--'
       - 'python'
       - 'manage.py'
-      - 'makemigrations'
-  options:
-    logging: CLOUD_LOGGING_ONLY    
+      - 'makemigrations'  
     id: Make migrations
 
   # 3. Migrate
@@ -52,8 +46,6 @@ steps:
       - 'python'
       - 'manage.py'
       - 'migrate'
-  options:
-    logging: CLOUD_LOGGING_ONLY    
     id: Migrate
 
     # 4. Collect static
@@ -69,9 +61,7 @@ steps:
       - 'python'
       - 'manage.py'
       - 'collectstatic'
-      - '--no-input'
-  options:
-    logging: CLOUD_LOGGING_ONLY    
+      - '--no-input'  
     id: Collect static
 
   # 5. Deploy to Cloud Run
@@ -86,9 +76,7 @@ steps:
       - >-
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
       - '--region=$_DEPLOY_REGION'
-      - '--quiet'
-  options:
-    logging: CLOUD_LOGGING_ONLY    
+      - '--quiet'   
     id: Deploy
     entrypoint: gcloud
 
