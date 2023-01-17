@@ -19,6 +19,8 @@ steps:
       - push
       - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
     id: Push
+  options:
+  logging: CLOUD_LOGGING_OsNLY  
 
   # 2. Make migrations
   - name: gcr.io/google-appengine/exec-wrapper
@@ -34,6 +36,8 @@ steps:
       - 'manage.py'
       - 'makemigrations'
     id: Make migrations
+  options:
+  logging: CLOUD_LOGGING_ONLY
 
   # 3. Migrate
   - name: gcr.io/google-appengine/exec-wrapper
@@ -49,6 +53,8 @@ steps:
       - 'manage.py'
       - 'migrate'
     id: Migrate
+  options:
+  logging: CLOUD_LOGGING_ONLY
 
     # 4. Collect static
   - name: gcr.io/google-appengine/exec-wrapper
@@ -65,6 +71,8 @@ steps:
       - 'collectstatic'
       - '--no-input'
     id: Collect static
+  options:
+  logging: CLOUD_LOGGING_ONLY
 
   # 5. Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -81,6 +89,8 @@ steps:
       - '--quiet'
     id: Deploy
     entrypoint: gcloud
+  options:
+  logging: CLOUD_LOGGING_ONLY
 # Store images in Google Artifact Registry
 images:
   - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
