@@ -10,6 +10,8 @@ steps:
       - '-f'
       - Dockerfile
     id: Build
+  options:
+  logging: CLOUD_LOGGING_ONLY  
 
   # 1. Docker push to Google Artifact Registry
   - name: gcr.io/cloud-builders/docker
@@ -86,5 +88,3 @@ images:
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
-options:
-  logging: CLOUD_LOGGING_ONLY
